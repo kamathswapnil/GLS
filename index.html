@@ -402,13 +402,13 @@ class="mobileCards">
 
 let tasks=
 JSON.parse(
-localStorage.getItem("tasks")
+<script type="module">   import { createClient } from "https://esm.sh/@supabase/supabase-js@2";    const supabase = createClient(     "https://YOUR_PROJECT_REF.supabase.co",     "YOUR_PUBLISHABLE_OR_ANON_KEY"   );    // Load tasks   async function fetchTasks() {     const { data, error } = await supabase       .from("tasks")       .select("*")       .order("id", { ascending: true });     if (!error) renderTasks(data);   }    // Add a task   async function addTask(title) {     const { error } = await supabase       .from("tasks")       .insert([{ title, done: false }]);     if (!error) fetchTasks();   }    // Toggle completed state   async function toggleTask(id, done) {     const { error } = await supabase       .from("tasks")       .update({ done })       .eq("id", id);     if (!error) fetchTasks();   }    // Delete a task   async function deleteTask(id) {     const { error } = await supabase       .from("tasks")       .delete()       .eq("id", id);     if (!error) fetchTasks();   } </script>.getItem("tasks")
 )||[];
 
 let editIndex=-1;
 
 function saveData(){
-localStorage.setItem(
+<script type="module">   import { createClient } from "https://esm.sh/@supabase/supabase-js@2";    const supabase = createClient(     "https://YOUR_PROJECT_REF.supabase.co",     "YOUR_PUBLISHABLE_OR_ANON_KEY"   );    // Load tasks   async function fetchTasks() {     const { data, error } = await supabase       .from("tasks")       .select("*")       .order("id", { ascending: true });     if (!error) renderTasks(data);   }    // Add a task   async function addTask(title) {     const { error } = await supabase       .from("tasks")       .insert([{ title, done: false }]);     if (!error) fetchTasks();   }    // Toggle completed state   async function toggleTask(id, done) {     const { error } = await supabase       .from("tasks")       .update({ done })       .eq("id", id);     if (!error) fetchTasks();   }    // Delete a task   async function deleteTask(id) {     const { error } = await supabase       .from("tasks")       .delete()       .eq("id", id);     if (!error) fetchTasks();   } </script>.setItem(
 "tasks",
 JSON.stringify(tasks)
 );
