@@ -1,0 +1,920 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🏠 Smart Household Reminder Manager</title>
+
+<style>
+
+:root{
+--primary:#2563eb;
+--success:#16a34a;
+--warning:#f59e0b;
+--danger:#dc2626;
+--glass:rgba(255,255,255,.18);
+--text:#ffffff;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+
+background:
+linear-gradient(
+rgba(0,0,0,.45),
+rgba(0,0,0,.45)
+),
+url("https://images.unsplash.com/photo-1512917774080-9991f1c4c750");
+
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+background-attachment:fixed;
+
+min-height:100vh;
+padding:20px;
+color:white;
+}
+
+.dark{
+background:
+linear-gradient(
+rgba(0,0,0,.65),
+rgba(0,0,0,.65)
+),
+url("https://images.unsplash.com/photo-1512917774080-9991f1c4c750");
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+}
+
+.container{
+max-width:1400px;
+margin:auto;
+}
+
+.hero{
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(15px);
+padding:30px;
+border-radius:20px;
+text-align:center;
+box-shadow:0px 8px 25px rgba(0,0,0,.3);
+margin-bottom:20px;
+}
+
+.hero h1{
+font-size:2.2rem;
+margin-bottom:10px;
+}
+
+.hero p{
+font-size:1rem;
+}
+
+.toolbar{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:10px;
+margin-top:15px;
+}
+
+.btn{
+background:linear-gradient(
+45deg,
+#2563eb,
+#4f46e5
+);
+border:none;
+color:white;
+padding:12px 18px;
+border-radius:10px;
+cursor:pointer;
+font-weight:600;
+}
+
+.btn:hover{
+transform:translateY(-2px);
+}
+
+.stats{
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+margin-bottom:25px;
+}
+
+.card{
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(15px);
+border-radius:15px;
+padding:20px;
+text-align:center;
+box-shadow:0 8px 25px rgba(0,0,0,.25);
+}
+
+.card h2{
+font-size:2rem;
+margin-bottom:5px;
+}
+
+.form-panel{
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(15px);
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:
+2fr 1fr 1fr 2fr auto;
+gap:10px;
+}
+
+input,select{
+padding:12px;
+border-radius:8px;
+border:none;
+outline:none;
+}
+
+.search{
+width:100%;
+padding:12px;
+border-radius:10px;
+border:none;
+margin-bottom:15px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(15px);
+overflow:hidden;
+border-radius:15px;
+}
+
+th{
+background:#2563eb;
+padding:12px;
+}
+
+td{
+padding:10px;
+text-align:center;
+border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.overdue{
+background:rgba(220,38,38,.35);
+}
+
+.today{
+background:rgba(245,158,11,.35);
+}
+
+.completed{
+background:rgba(22,163,74,.35);
+}
+
+.action{
+padding:7px 10px;
+border:none;
+border-radius:5px;
+color:white;
+cursor:pointer;
+margin:2px;
+}
+
+.edit{
+background:#f59e0b;
+}
+
+.done{
+background:#16a34a;
+}
+
+.delete{
+background:#dc2626;
+}
+
+.mobileCards{
+display:none;
+}
+
+.mobileTask{
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(15px);
+padding:15px;
+border-radius:15px;
+margin-bottom:12px;
+}
+
+.mobileTask h3{
+margin-bottom:8px;
+}
+
+footer{
+text-align:center;
+margin-top:25px;
+font-size:14px;
+color:white;
+}
+
+@media(max-width:768px){
+
+.form-grid{
+grid-template-columns:1fr;
+}
+
+table{
+display:none;
+}
+
+.mobileCards{
+display:block;
+}
+
+.hero h1{
+font-size:1.6rem;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="hero">
+
+<h1>🏠 Smart Household Reminder Manager</h1>
+
+<p>
+Manage cleaning schedules, maintenance,
+service reminders and recurring household
+tasks with ease.
+</p>
+
+<div class="toolbar">
+
+<button class="btn" onclick="toggleTheme()">
+🌙 Theme
+</button>
+
+<button class="btn" onclick="downloadBackup()">
+💾 Export
+</button>
+
+<input
+type="file"
+id="restoreFile"
+accept=".json"
+style="display:none"
+onchange="restoreBackup(event)">
+
+<button class="btn"
+onclick="document.getElementById('restoreFile').click()">
+📂 Import
+</button>
+
+</div>
+
+</div>
+
+<div class="stats">
+
+<div class="card">
+<h2 id="totalTasks">0</h2>
+<p>Total Tasks</p>
+</div>
+
+<div class="card">
+<h2 id="todayTasks">0</h2>
+<p>Due Today</p>
+</div>
+
+<div class="card">
+<h2 id="overdueTasks">0</h2>
+<p>Overdue</p>
+</div>
+
+<div class="card">
+<h2 id="completedTasks">0</h2>
+<p>Completed</p>
+</div>
+
+</div>
+
+<div class="form-panel">
+
+<div class="form-grid">
+
+<input
+type="text"
+id="work"
+placeholder="Work To Be Done">
+
+<input
+type="date"
+id="duedate">
+
+<select id="frequency">
+
+<option value="0">One Time</option>
+<option value="7">Weekly</option>
+<option value="15">Half Monthly</option>
+<option value="1">Monthly</option>
+<option value="3">Quarterly</option>
+<option value="6">Half Yearly</option>
+<option value="12">Yearly</option>
+
+</select>
+
+<input
+type="text"
+id="remark"
+placeholder="Remarks">
+
+<button
+id="saveBtn"
+class="btn"
+onclick="saveTask()">
+➕ Add Task
+</button>
+
+</div>
+
+</div>
+
+<input
+class="search"
+type="text"
+id="search"
+placeholder="🔍 Search Tasks..."
+onkeyup="render()">
+
+<table>
+
+<thead>
+<tr>
+<th>Sr No</th>
+<th>Work</th>
+<th>Due Date</th>
+<th>Frequency</th>
+<th>Remarks</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="taskTable"></tbody>
+
+</table>
+
+<div
+id="mobileCards"
+class="mobileCards">
+</div>
+
+<footer>
+🏡 Smart Home Maintenance Management System
+</footer>
+
+</div>
+
+<script>
+
+let tasks=
+JSON.parse(
+localStorage.getItem("tasks")
+)||[];
+
+let editIndex=-1;
+
+function saveData(){
+localStorage.setItem(
+"tasks",
+JSON.stringify(tasks)
+);
+}
+
+function clearForm(){
+work.value="";
+duedate.value="";
+frequency.value="0";
+remark.value="";
+}
+
+function saveTask(){
+
+if(
+!work.value ||
+!duedate.value
+){
+alert("Enter Work Name & Due Date");
+return;
+}
+
+if(editIndex==-1){
+
+tasks.push({
+work:work.value,
+duedate:duedate.value,
+frequency:frequency.value,
+remark:remark.value,
+completed:false
+});
+
+}else{
+
+tasks[editIndex].work=work.value;
+tasks[editIndex].duedate=duedate.value;
+tasks[editIndex].frequency=frequency.value;
+tasks[editIndex].remark=remark.value;
+
+editIndex=-1;
+
+saveBtn.innerHTML=
+"➕ Add Task";
+}
+
+clearForm();
+saveData();
+render();
+}
+
+function editTask(i){
+
+let t=tasks[i];
+
+work.value=t.work;
+duedate.value=t.duedate;
+frequency.value=t.frequency;
+remark.value=t.remark;
+
+editIndex=i;
+
+saveBtn.innerHTML=
+"💾 Save Changes";
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+}
+
+function deleteTask(i){
+
+if(confirm("Delete Task?")){
+
+tasks.splice(i,1);
+
+saveData();
+render();
+}
+}
+
+function completeTask(i){
+
+let t=tasks[i];
+
+if(t.frequency=="0"){
+
+t.completed=true;
+
+}else{
+
+let d=new Date(t.duedate);
+
+if(t.frequency=="7"){
+d.setDate(
+d.getDate()+7
+);
+}
+else if(t.frequency=="15"){
+d.setDate(
+d.getDate()+15
+);
+}
+else{
+d.setMonth(
+d.getMonth()+
+parseInt(t.frequency)
+);
+}
+
+t.duedate=
+d.toISOString().split("T")[0];
+}
+
+saveData();
+render();
+}
+
+function getFrequency(f){
+
+const map={
+0:"One Time",
+7:"Weekly",
+15:"Half Monthly",
+1:"Monthly",
+3:"Quarterly",
+6:"Half Yearly",
+12:"Yearly"
+};
+
+return map[f];
+}
+
+function render(){
+
+let body=
+document.getElementById(
+"taskTable"
+);
+
+let cards=
+document.getElementById(
+"mobileCards"
+);
+
+body.innerHTML="";
+cards.innerHTML="";
+
+let today=
+new Date()
+.toISOString()
+.split("T")[0];
+
+let search=
+document.getElementById(
+"search"
+)
+.value
+.toLowerCase();
+
+let total=0;
+let dueToday=0;
+let overdue=0;
+let completed=0;
+
+tasks.forEach((t,index)=>{
+
+if(
+!t.work
+.toLowerCase()
+.includes(search)
+)return;
+
+total++;
+
+let status=
+"Pending";
+
+let cls="";
+
+if(t.completed){
+
+status="Completed";
+cls="completed";
+completed++;
+
+}
+else if(
+t.duedate<today
+){
+
+status="Overdue";
+cls="overdue";
+overdue++;
+
+}
+else if(
+t.duedate===today
+){
+
+status="Due Today";
+cls="today";
+dueToday++;
+}
+
+body.innerHTML+=`
+<tr class="${cls}">
+<td>${index+1}</td>
+<td>${t.work}</td>
+<td>${t.duedate}</td>
+<td>${getFrequency(t.frequency)}</td>
+<td>${t.remark}</td>
+<td>${status}</td>
+<td>
+
+<button
+class="action edit"
+onclick="editTask(${index})">
+✏️
+</button>
+
+<button
+class="action done"
+onclick="completeTask(${index})">
+✓
+</button>
+
+<button
+class="action delete"
+onclick="deleteTask(${index})">
+✖
+</button>
+
+</td>
+</tr>`;
+
+cards.innerHTML+=`
+<div class="mobileTask ${cls}">
+<h3>${t.work}</h3>
+
+<p><b>Due:</b>
+${t.duedate}</p>
+
+<p><b>Frequency:</b>
+${getFrequency(t.frequency)}</p>
+
+<p><b>Remark:</b>
+${t.remark}</p>
+
+<p><b>Status:</b>
+${status}</p>
+
+<br>
+
+<button
+class="action edit"
+onclick="editTask(${index})">
+Edit
+</button>
+
+<button
+class="action done"
+onclick="completeTask(${index})">
+Done
+</button>
+
+<button
+class="action delete"
+onclick="deleteTask(${index})">
+Delete
+</button>
+
+</div>`;
+});
+
+totalTasks.innerText=total;
+todayTasks.innerText=dueToday;
+overdueTasks.innerText=overdue;
+completedTasks.innerText=completed;
+}
+
+function downloadBackup(){
+
+let blob=new Blob(
+[JSON.stringify(tasks,null,2)],
+{type:"application/json"}
+);
+
+let a=
+document.createElement("a");
+
+a.href=
+URL.createObjectURL(blob);
+
+a.download=
+"HouseholdReminderBackup.json";
+
+a.click();
+}
+
+function restoreBackup(event){
+
+let file=
+event.target.files[0];
+
+if(!file)return;
+
+let reader=
+new FileReader();
+
+reader.onload=
+function(e){
+
+try{
+
+tasks=
+JSON.parse(
+e.target.result
+);
+
+saveData();
+render();
+
+alert(
+"Backup Restored Successfully"
+);
+
+}catch{
+
+alert(
+"Invalid Backup File"
+);
+}
+};
+
+reader.readAsText(file);
+}
+
+function toggleTheme(){
+document.body.classList.toggle("dark");
+}
+
+render();
+
+</script>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🏠 Smart Household Reminder Manager</title>
+
+<style>
+
+:root{
+--primary:#2563eb;
+--success:#16a34a;
+--warning:#f59e0b;
+--danger:#dc2626;
+--glass:rgba(255,255,255,.18);
+--text:#ffffff;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+
+background:
+linear-gradient(
+rgba(0,0,0,.45),
+rgba(0,0,0,.45)
+),
+url("https://images.unsplash.com/photo-1512917774080-9991f1c4c750");
+
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+background-attachment:fixed;
+
+min-height:100vh;
+padding:20px;
+color:white;
+}
+
+.dark{
+background:
+linear-gradient(
+rgba(0,0,0,.65),
+rgba(0,0,0,.65)
+),
+url("https://images.unsplash.com/photo-1512917774080-9991f1c4c750");
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+}
+
+.container{
+max-width:1400px;
+margin:auto;
+}
+
+.hero{
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(15px);
+padding:30px;
+border-radius:20px;
+text-align:center;
+box-shadow:0px 8px 25px rgba(0,0,0,.3);
+margin-bottom:20px;
+}
+
+.hero h1{
+font-size:2.2rem;
+margin-bottom:10px;
+}
+
+.hero p{
+font-size:1rem;
+}
+
+.toolbar{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:10px;
+margin-top:15px;
+}
+
+.btn{
+background:linear-gradient(
+45deg,
+#2563eb,
+#4f46e5
+);
+border:none;
+color:white;
+padding:12px 18px;
+border-radius:10px;
+cursor:pointer;
+font-weight:600;
+}
+
+.btn:hover{
+transform:translateY(-2px);
+}
+
+.stats{
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+margin-bottom:25px;
+}
+
+.card{
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(15px);
+border-radius:15px;
+padding:20px;
+text-align:center;
+box-shadow:0 8px 25px rgba(0,0,0,.25);
+}
+
+.card h2{
+font-size:2rem;
+margin-bottom:5px;
+}
+
+.form-panel{
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(15px);
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:
+2fr 1fr 1fr 2fr auto;
+gap:10px;
+}
+
+input,select{
+padding:12px;
+border-radius:8px;
+border:none;
+outline:none;
+}
+
+.search{
+width:100%;
+padding:12px;
+border-radius:10px;
+border:none;
+margin-bottom:15px;
+}
+
+table{
