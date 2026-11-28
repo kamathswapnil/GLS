@@ -297,9 +297,51 @@ font-size:1.6rem;
 
 </style>
 </head>
-
+</div>
 <body>
-    <p id="error"></p>
+
+<div id="loginScreen" style="
+  position:fixed;
+  inset:0;
+  background:#eef2f7;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:99999;
+  font-family:Arial,sans-serif;
+">
+  <div style="
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    width:320px;
+    max-width:85%;
+    box-shadow:0 4px 20px #0002;
+    text-align:center;
+  ">
+    <h2>GLS Login</h2>
+    <p>Smart Household Reminder Manager</p>
+
+    <input id="loginId" type="text"
+      placeholder="Login ID"
+      style="width:90%;padding:12px;margin:8px 0;">
+
+    <input id="loginPassword" type="password"
+      placeholder="Password"
+      style="width:90%;padding:12px;margin:8px 0;">
+
+    <button onclick="checkLogin()"
+      style="width:100%;padding:12px;
+      background:#2563eb;color:white;
+      border:0;border-radius:6px;cursor:pointer;">
+      Login
+    </button>
+
+    <p id="loginError" style="color:red;"></p>
+  </div>
+</div>
+
+  <p id="error"></p>
 
 </div>
 
