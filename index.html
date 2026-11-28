@@ -298,6 +298,7 @@ font-size:1.6rem;
 </style>
 </head>
 </div>
+  
 <body>
 
 <div id="loginScreen" style="
@@ -840,7 +841,37 @@ document.body.classList.toggle("dark");
 render();
 
 </script>
+<script>
+const correctUsername = "admin";
+const correctPassword = "12345";
 
+function checkLogin() {
+  const username =
+    document.getElementById("loginId").value;
+
+  const password =
+    document.getElementById("loginPassword").value;
+
+  if (
+    username === correctUsername &&
+    password === correctPassword
+  ) {
+    sessionStorage.setItem("glsLoggedIn", "yes");
+
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("mainApp").style.display = "block";
+  } else {
+    document.getElementById("loginError").innerText =
+      "Invalid Login ID or Password!";
+  }
+}
+
+// Restore login during the current browser session
+if (sessionStorage.getItem("glsLoggedIn") === "yes") {
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("mainApp").style.display = "block";
+}
+</script>
 </body>
 </html>
 
