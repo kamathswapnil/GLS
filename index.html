@@ -1,22 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>🏠 Smart Household Reminder Manager</title>
 
 <style>
-
-:root{
---primary:#2563eb;
---success:#16a34a;
---warning:#f59e0b;
---danger:#dc2626;
---glass:rgba(255,255,255,.18);
---text:#ffffff;
-}
 
 *{
 margin:0;
@@ -26,78 +15,50 @@ font-family:'Segoe UI',sans-serif;
 }
 
 body{
-
-<div id="loginScreen" style="
-  position:fixed;
-  inset:0;
-  background:#eef2f7;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:99999;
-  font-family:Arial,sans-serif;
-">
-  <div style="
-    background:white;
-    padding:30px;
-    border-radius:12px;
-    width:320px;
-    max-width:85%;
-    box-shadow:0 4px 20px #0002;
-    text-align:center;
-  ">
-    <h2>GLS Login</h2>
-    <p>Smart Household Reminder Manager</p>
-
-    <input id="loginId" type="text"
-      placeholder="Login ID"
-      style="width:90%;padding:12px;margin:8px 0;">
-
-    <input id="loginPassword" type="password"
-      placeholder="Password"
-      style="width:90%;padding:12px;margin:8px 0;">
-
-    <button onclick="checkLogin()"
-      style="width:100%;padding:12px;
-      background:#2563eb;color:white;
-      border:0;border-radius:6px;cursor:pointer;">
-      Login
-    </button>
-
-    <p id="loginError" style="color:red;"></p>
-  </div>
-</div>
-
-background:
-linear-gradient(
-rgba(0,0,0,.45),
-rgba(0,0,0,.45)
-),
-url("https://images.unsplash.com/photo-1512917774080-9991f1c4c750");
-
+background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)),
+url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750');
 background-size:cover;
 background-position:center;
-background-repeat:no-repeat;
 background-attachment:fixed;
-
 min-height:100vh;
-padding:20px;
 color:white;
+padding:20px;
 }
 
 .dark{
-background:
-linear-gradient(
-rgba(0,0,0,.65),
-rgba(0,0,0,.65)
-),
-url("https://images.unsplash.com/photo-1512917774080-9991f1c4c750");
+background:linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.75)),
+url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750');
 background-size:cover;
 background-position:center;
 background-attachment:fixed;
 }
 
+.login-container{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.login-box{
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(15px);
+padding:30px;
+border-radius:20px;
+width:350px;
+text-align:center;
+}
+
+.login-box input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:none;
+border-radius:8px;
+}
+
 .container{
+display:none;
 max-width:1400px;
 margin:auto;
 }
@@ -105,20 +66,10 @@ margin:auto;
 .hero{
 background:rgba(255,255,255,.15);
 backdrop-filter:blur(15px);
-padding:30px;
+padding:25px;
 border-radius:20px;
 text-align:center;
-box-shadow:0px 8px 25px rgba(0,0,0,.3);
 margin-bottom:20px;
-}
-
-.hero h1{
-font-size:2.2rem;
-margin-bottom:10px;
-}
-
-.hero p{
-font-size:1rem;
 }
 
 .toolbar{
@@ -130,48 +81,33 @@ margin-top:15px;
 }
 
 .btn{
-background:linear-gradient(
-45deg,
-#2563eb,
-#4f46e5
-);
-border:none;
+background:#2563eb;
 color:white;
+border:none;
 padding:12px 18px;
-border-radius:10px;
 cursor:pointer;
+border-radius:8px;
 font-weight:600;
-}
-
-.btn:hover{
-transform:translateY(-2px);
 }
 
 .stats{
 display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(220px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
 gap:15px;
-margin-bottom:25px;
+margin:20px 0;
 }
 
 .card{
 background:rgba(255,255,255,.15);
-backdrop-filter:blur(15px);
-border-radius:15px;
+backdrop-filter:blur(10px);
 padding:20px;
+border-radius:15px;
 text-align:center;
-box-shadow:0 8px 25px rgba(0,0,0,.25);
-}
-
-.card h2{
-font-size:2rem;
-margin-bottom:5px;
 }
 
 .form-panel{
 background:rgba(255,255,255,.15);
-backdrop-filter:blur(15px);
+backdrop-filter:blur(10px);
 padding:20px;
 border-radius:15px;
 margin-bottom:20px;
@@ -179,23 +115,21 @@ margin-bottom:20px;
 
 .form-grid{
 display:grid;
-grid-template-columns:
-2fr 1fr 1fr 2fr auto;
+grid-template-columns:2fr 1fr 1fr 2fr auto;
 gap:10px;
 }
 
-input,select{
+.form-grid input,.form-grid select{
 padding:12px;
-border-radius:8px;
 border:none;
-outline:none;
+border-radius:8px;
 }
 
 .search{
 width:100%;
 padding:12px;
-border-radius:10px;
 border:none;
+border-radius:10px;
 margin-bottom:15px;
 }
 
@@ -203,9 +137,8 @@ table{
 width:100%;
 border-collapse:collapse;
 background:rgba(255,255,255,.15);
-backdrop-filter:blur(15px);
 overflow:hidden;
-border-radius:15px;
+border-radius:10px;
 }
 
 th{
@@ -216,41 +149,24 @@ padding:12px;
 td{
 padding:10px;
 text-align:center;
-border-bottom:1px solid rgba(255,255,255,.1);
-}
-
-.overdue{
-background:rgba(220,38,38,.35);
-}
-
-.today{
-background:rgba(245,158,11,.35);
-}
-
-.completed{
-background:rgba(22,163,74,.35);
 }
 
 .action{
-padding:7px 10px;
 border:none;
-border-radius:5px;
+padding:6px 10px;
 color:white;
 cursor:pointer;
+border-radius:5px;
 margin:2px;
 }
 
-.edit{
-background:#f59e0b;
-}
+.edit{background:#f59e0b;}
+.done{background:#16a34a;}
+.delete{background:#dc2626;}
 
-.done{
-background:#16a34a;
-}
-
-.delete{
-background:#dc2626;
-}
+.overdue{background:rgba(220,38,38,.35);}
+.today{background:rgba(245,158,11,.35);}
+.completed{background:rgba(22,163,74,.35);}
 
 .mobileCards{
 display:none;
@@ -258,21 +174,9 @@ display:none;
 
 .mobileTask{
 background:rgba(255,255,255,.15);
-backdrop-filter:blur(15px);
 padding:15px;
-border-radius:15px;
-margin-bottom:12px;
-}
-
-.mobileTask h3{
-margin-bottom:8px;
-}
-
-footer{
-text-align:center;
-margin-top:25px;
-font-size:14px;
-color:white;
+margin-bottom:10px;
+border-radius:12px;
 }
 
 @media(max-width:768px){
@@ -288,74 +192,41 @@ display:none;
 .mobileCards{
 display:block;
 }
-
-.hero h1{
-font-size:1.6rem;
-}
-
 }
 
 </style>
 </head>
-</div>
-  
+
 <body>
 
-<div id="loginScreen" style="
-  position:fixed;
-  inset:0;
-  background:#eef2f7;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:99999;
-  font-family:Arial,sans-serif;
-">
-  <div style="
-    background:white;
-    padding:30px;
-    border-radius:12px;
-    width:320px;
-    max-width:85%;
-    box-shadow:0 4px 20px #0002;
-    text-align:center;
-  ">
-    <h2>GLS Login</h2>
-    <p>Smart Household Reminder Manager</p>
+<div id="loginPage" class="login-container">
 
-    <input id="loginId" type="text"
-      placeholder="Login ID"
-      style="width:90%;padding:12px;margin:8px 0;">
+<div class="login-box">
 
-    <input id="loginPassword" type="password"
-      placeholder="Password"
-      style="width:90%;padding:12px;margin:8px 0;">
+<h2>🔐 Login</h2>
 
-    <button onclick="checkLogin()"
-      style="width:100%;padding:12px;
-      background:#2563eb;color:white;
-      border:0;border-radius:6px;cursor:pointer;">
-      Login
-    </button>
+<input type="text" id="username" placeholder="Username">
 
-    <p id="loginError" style="color:red;"></p>
-  </div>
-</div>
+<input type="password" id="password" placeholder="Password">
 
-  <p id="error"></p>
+<button class="btn" onclick="login()">
+Login
+</button>
+
+<p id="loginError" style="color:#ffb3b3;margin-top:10px;"></p>
 
 </div>
 
-<div class="container">
+</div>
+
+<div id="appContent" class="container">
 
 <div class="hero">
 
 <h1>🏠 Smart Household Reminder Manager</h1>
 
 <p>
-Manage cleaning schedules, maintenance,
-service reminders and recurring household
-tasks with ease.
+Manage recurring household tasks and reminders
 </p>
 
 <div class="toolbar">
@@ -368,17 +239,20 @@ tasks with ease.
 💾 Export
 </button>
 
+<button class="btn" onclick="document.getElementById('restoreFile').click()">
+📂 Import
+</button>
+
+<button class="btn" onclick="logout()">
+🚪 Logout
+</button>
+
 <input
 type="file"
 id="restoreFile"
 accept=".json"
 style="display:none"
 onchange="restoreBackup(event)">
-
-<button class="btn"
-onclick="document.getElementById('restoreFile').click()">
-📂 Import
-</button>
 
 </div>
 
@@ -422,7 +296,6 @@ type="date"
 id="duedate">
 
 <select id="frequency">
-
 <option value="0">One Time</option>
 <option value="7">Weekly</option>
 <option value="15">Half Monthly</option>
@@ -430,7 +303,6 @@ id="duedate">
 <option value="3">Quarterly</option>
 <option value="6">Half Yearly</option>
 <option value="12">Yearly</option>
-
 </select>
 
 <input
@@ -451,7 +323,6 @@ onclick="saveTask()">
 
 <input
 class="search"
-type="text"
 id="search"
 placeholder="🔍 Search Tasks..."
 onkeyup="render()">
@@ -474,47 +345,74 @@ onkeyup="render()">
 
 </table>
 
-<div
-id="mobileCards"
-class="mobileCards">
-</div>
-
-<footer>
-🏡 Smart Home Maintenance Management System
-</footer>
+<div class="mobileCards" id="mobileCards"></div>
 
 </div>
 
 <script>
 
-let tasks=
-JSON.parse(
-localStorage.getItem("tasks")
-)||[];
+function login(){
+
+let user =
+document.getElementById("username").value;
+
+let pass =
+document.getElementById("password").value;
+
+if(user==="admin" && pass==="12345"){
+
+sessionStorage.setItem("loggedIn","true");
+
+document.getElementById("loginPage")
+.style.display="none";
+
+document.getElementById("appContent")
+.style.display="block";
+
+render();
+
+}else{
+
+document.getElementById("loginError")
+.innerText="Invalid Username or Password";
+}
+}
+
+window.onload=function(){
+
+if(sessionStorage.getItem("loggedIn")==="true"){
+
+document.getElementById("loginPage")
+.style.display="none";
+
+document.getElementById("appContent")
+.style.display="block";
+
+render();
+}
+}
+
+function logout(){
+
+sessionStorage.removeItem("loggedIn");
+location.reload();
+
+}
+
+let tasks =
+JSON.parse(localStorage.getItem("tasks")) || [];
 
 let editIndex=-1;
 
 function saveData(){
-localStorage.setItem(
-"tasks",
-JSON.stringify(tasks)
-);
-}
-
-function clearForm(){
-work.value="";
-duedate.value="";
-frequency.value="0";
-remark.value="";
+localStorage.setItem("tasks",
+JSON.stringify(tasks));
 }
 
 function saveTask(){
 
-if(
-!work.value ||
-!duedate.value
-){
-alert("Enter Work Name & Due Date");
+if(!work.value || !duedate.value){
+alert("Enter Work & Due Date");
 return;
 }
 
@@ -536,14 +434,21 @@ tasks[editIndex].frequency=frequency.value;
 tasks[editIndex].remark=remark.value;
 
 editIndex=-1;
-
-saveBtn.innerHTML=
-"➕ Add Task";
+saveBtn.innerHTML="➕ Add Task";
 }
 
-clearForm();
 saveData();
+clearForm();
 render();
+}
+
+function clearForm(){
+
+work.value="";
+duedate.value="";
+frequency.value="0";
+remark.value="";
+
 }
 
 function editTask(i){
@@ -557,23 +462,19 @@ remark.value=t.remark;
 
 editIndex=i;
 
-saveBtn.innerHTML=
-"💾 Save Changes";
+saveBtn.innerHTML="💾 Save";
 
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
 }
 
 function deleteTask(i){
 
-if(confirm("Delete Task?")){
+if(confirm("Delete task?")){
 
 tasks.splice(i,1);
 
 saveData();
 render();
+
 }
 }
 
@@ -589,25 +490,16 @@ t.completed=true;
 
 let d=new Date(t.duedate);
 
-if(t.frequency=="7"){
-d.setDate(
-d.getDate()+7
-);
-}
-else if(t.frequency=="15"){
-d.setDate(
-d.getDate()+15
-);
-}
-else{
-d.setMonth(
-d.getMonth()+
-parseInt(t.frequency)
-);
-}
+if(t.frequency=="7")
+d.setDate(d.getDate()+7);
 
-t.duedate=
-d.toISOString().split("T")[0];
+else if(t.frequency=="15")
+d.setDate(d.getDate()+15);
+
+else
+d.setMonth(d.getMonth()+parseInt(t.frequency));
+
+t.duedate=d.toISOString().split('T')[0];
 }
 
 saveData();
@@ -631,30 +523,15 @@ return map[f];
 
 function render(){
 
-let body=
-document.getElementById(
-"taskTable"
-);
-
-let cards=
-document.getElementById(
-"mobileCards"
-);
+let body=document.getElementById("taskTable");
+let cards=document.getElementById("mobileCards");
 
 body.innerHTML="";
 cards.innerHTML="";
 
-let today=
-new Date()
+let today=new Date()
 .toISOString()
 .split("T")[0];
-
-let search=
-document.getElementById(
-"search"
-)
-.value
-.toLowerCase();
 
 let total=0;
 let dueToday=0;
@@ -663,18 +540,8 @@ let completed=0;
 
 tasks.forEach((t,index)=>{
 
-if(
-!t.work
-.toLowerCase()
-.includes(search)
-)return;
-
-total++;
-
-let status=
-"Pending";
-
 let cls="";
+let status="Pending";
 
 if(t.completed){
 
@@ -683,25 +550,24 @@ cls="completed";
 completed++;
 
 }
-else if(
-t.duedate<today
-){
+else if(t.duedate<today){
 
 status="Overdue";
 cls="overdue";
 overdue++;
 
 }
-else if(
-t.duedate===today
-){
+else if(t.duedate===today){
 
 status="Due Today";
 cls="today";
 dueToday++;
+
 }
 
-body.innerHTML+=`
+total++;
+
+body.innerHTML += `
 <tr class="${cls}">
 <td>${index+1}</td>
 <td>${t.work}</td>
@@ -710,64 +576,18 @@ body.innerHTML+=`
 <td>${t.remark}</td>
 <td>${status}</td>
 <td>
-
-<button
-class="action edit"
-onclick="editTask(${index})">
-✏️
-</button>
-
-<button
-class="action done"
-onclick="completeTask(${index})">
-✓
-</button>
-
-<button
-class="action delete"
-onclick="deleteTask(${index})">
-✖
-</button>
-
+<button class="action edit" onclick="editTask(${index})">Edit</button>
+<button class="action done" onclick="completeTask(${index})">Done</button>
+<button class="action delete" onclick="deleteTask(${index})">Del</button>
 </td>
 </tr>`;
 
-cards.innerHTML+=`
+cards.innerHTML += `
 <div class="mobileTask ${cls}">
 <h3>${t.work}</h3>
-
-<p><b>Due:</b>
-${t.duedate}</p>
-
-<p><b>Frequency:</b>
-${getFrequency(t.frequency)}</p>
-
-<p><b>Remark:</b>
-${t.remark}</p>
-
-<p><b>Status:</b>
-${status}</p>
-
-<br>
-
-<button
-class="action edit"
-onclick="editTask(${index})">
-Edit
-</button>
-
-<button
-class="action done"
-onclick="completeTask(${index})">
-Done
-</button>
-
-<button
-class="action delete"
-onclick="deleteTask(${index})">
-Delete
-</button>
-
+<p>Due: ${t.duedate}</p>
+<p>Frequency: ${getFrequency(t.frequency)}</p>
+<p>Status: ${status}</p>
 </div>`;
 });
 
@@ -784,254 +604,42 @@ let blob=new Blob(
 {type:"application/json"}
 );
 
-let a=
-document.createElement("a");
+let a=document.createElement("a");
 
-a.href=
-URL.createObjectURL(blob);
-
-a.download=
-"HouseholdReminderBackup.json";
-
+a.href=URL.createObjectURL(blob);
+a.download="HouseholdBackup.json";
 a.click();
+
 }
 
 function restoreBackup(event){
 
-let file=
-event.target.files[0];
+let file=event.target.files[0];
 
-if(!file)return;
+if(!file) return;
 
-let reader=
-new FileReader();
+let reader=new FileReader();
 
-reader.onload=
-function(e){
+reader.onload=function(e){
 
-try{
-
-tasks=
-JSON.parse(
-e.target.result
-);
+tasks=JSON.parse(e.target.result);
 
 saveData();
 render();
 
-alert(
-"Backup Restored Successfully"
-);
-
-}catch{
-
-alert(
-"Invalid Backup File"
-);
-}
 };
 
 reader.readAsText(file);
+
 }
 
 function toggleTheme(){
+
 document.body.classList.toggle("dark");
-}
 
-render();
+}
 
 </script>
-<script>
-const correctUsername = "admin";
-const correctPassword = "12345";
 
-function checkLogin() {
-  const username =
-    document.getElementById("loginId").value;
-
-  const password =
-    document.getElementById("loginPassword").value;
-
-  if (
-    username === correctUsername &&
-    password === correctPassword
-  ) {
-    sessionStorage.setItem("glsLoggedIn", "yes");
-
-    document.getElementById("loginScreen").style.display = "none";
-    document.getElementById("mainApp").style.display = "block";
-  } else {
-    document.getElementById("loginError").innerText =
-      "Invalid Login ID or Password!";
-  }
-}
-
-// Restore login during the current browser session
-if (sessionStorage.getItem("glsLoggedIn") === "yes") {
-  document.getElementById("loginScreen").style.display = "none";
-  document.getElementById("mainApp").style.display = "block";
-}
-</script>
 </body>
 </html>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>🏠 Smart Household Reminder Manager</title>
-
-<style>
-
-:root{
---primary:#2563eb;
---success:#16a34a;
---warning:#f59e0b;
---danger:#dc2626;
---glass:rgba(255,255,255,.18);
---text:#ffffff;
-}
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
-}
-
-body{
-
-background:
-linear-gradient(
-rgba(0,0,0,.45),
-rgba(0,0,0,.45)
-),
-url("https://images.unsplash.com/photo-1512917774080-9991f1c4c750");
-
-background-size:cover;
-background-position:center;
-background-repeat:no-repeat;
-background-attachment:fixed;
-
-min-height:100vh;
-padding:20px;
-color:white;
-}
-
-.dark{
-background:
-linear-gradient(
-rgba(0,0,0,.65),
-rgba(0,0,0,.65)
-),
-url("https://images.unsplash.com/photo-1512917774080-9991f1c4c750");
-background-size:cover;
-background-position:center;
-background-attachment:fixed;
-}
-
-.container{
-max-width:1400px;
-margin:auto;
-}
-
-.hero{
-background:rgba(255,255,255,.15);
-backdrop-filter:blur(15px);
-padding:30px;
-border-radius:20px;
-text-align:center;
-box-shadow:0px 8px 25px rgba(0,0,0,.3);
-margin-bottom:20px;
-}
-
-.hero h1{
-font-size:2.2rem;
-margin-bottom:10px;
-}
-
-.hero p{
-font-size:1rem;
-}
-
-.toolbar{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:10px;
-margin-top:15px;
-}
-
-.btn{
-background:linear-gradient(
-45deg,
-#2563eb,
-#4f46e5
-);
-border:none;
-color:white;
-padding:12px 18px;
-border-radius:10px;
-cursor:pointer;
-font-weight:600;
-}
-
-.btn:hover{
-transform:translateY(-2px);
-}
-
-.stats{
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(220px,1fr));
-gap:15px;
-margin-bottom:25px;
-}
-
-.card{
-background:rgba(255,255,255,.15);
-backdrop-filter:blur(15px);
-border-radius:15px;
-padding:20px;
-text-align:center;
-box-shadow:0 8px 25px rgba(0,0,0,.25);
-}
-
-.card h2{
-font-size:2rem;
-margin-bottom:5px;
-}
-
-.form-panel{
-background:rgba(255,255,255,.15);
-backdrop-filter:blur(15px);
-padding:20px;
-border-radius:15px;
-margin-bottom:20px;
-}
-
-.form-grid{
-display:grid;
-grid-template-columns:
-2fr 1fr 1fr 2fr auto;
-gap:10px;
-}
-
-input,select{
-padding:12px;
-border-radius:8px;
-border:none;
-outline:none;
-}
-
-.search{
-width:100%;
-padding:12px;
-border-radius:10px;
-border:none;
-margin-bottom:15px;
-}
-
-table{
